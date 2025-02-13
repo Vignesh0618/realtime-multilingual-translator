@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Multilingual Translator</title>
+</head>
+<body>
+    <h1>Real-Time Multilingual Translator</h1>
+    <textarea id="textInput" placeholder="Enter text here..."></textarea>
+    <select id="languageSelect">
+        <option value="ta">Tamil</option>
+        <option value="en">English</option>
+        <option value="te">Telugu</option>
+        <option value="hi">Hindi</option>
+    </select>
+    <button onclick="translateText()">Translate</button>
+    <p>Translation: <span id="translatedText"></span></p>
+
+    <script>
+        function translateText() {
+            let text = document.getElementById("textInput").value;
+            let language = document.getElementById("languageSelect").value;
+
+            fetch('/translate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: text, language: language })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("translatedText").innerText = data.translated_text;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
